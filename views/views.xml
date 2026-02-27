@@ -1,6 +1,17 @@
 <odoo>
   <data>
 
+    <record id="view_solidserv_server_list" model="ir.ui.view">
+        <field name="name">solidserv.server.list</field>
+        <field name="model">solidserv.server</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="ipPublic"/>
+            </list>
+        </field>
+    </record>
+
     <record id="view_solidserv_server_form" model="ir.ui.view">
             <field name="name">solidserv.server.form</field>
             <field name="model">solidserv.server</field>
@@ -10,8 +21,25 @@
                         <group>
                             <group string="Identité">
                                 <field name="name"/>
+                                <field name="ipPublic"/>
+                            </group>
+                            <group string="Serveur">
+                                <field name="ipPrivate"/>
+                            </group>
+                            <group string="Technique">
+                                <field name="cpu"/>
+                                <field name="ram"/>
+                                <field name="rom"/>
                             </group>
                         </group>
+                        <notebook>
+                            <page string="Description" name="content_page">
+                                <field name="content" placeholder="Écrivez votre description ici..."/>
+                            </page>
+                            <page string="Notes Internes" name="notes_page">
+                                <field name="notes" widget="html" options="{'safe': True}"/>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
