@@ -103,6 +103,82 @@
             <field name="path">solidserv-types</field>
         </record>
 
+      <!-- VUE DOMAIN-->
+    <record id="view_solidserv_domain_list" model="ir.ui.view">
+        <field name="name">solidserv.domain.list</field>
+        <field name="model">solidserv.domain</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="type"/>
+                <field name="main_id" widget="selection"/>
+
+                <field name="content"/>
+
+                <field name="hebergeur_id" widget="badge"/>
+
+                <field name="client_ids" widget="many2many_tags"/>
+
+                <field name="name" column_invisible="1"/>
+                <button
+                    name="action_open_domain"
+                    type="object"
+                    icon="fa-globe"
+                    title="Voir le site"
+                    invisible="not name"/>
+
+            </list>
+        </field>
+    </record>
+
+      <!-- FORM DOMAIN -->
+    <record id="view_solidserv_domain_form" model="ir.ui.view">
+            <field name="name">solidserv.domain.form</field>
+            <field name="model">solidserv.domain</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group string="Identité">
+                                <field name="name"/>
+                                <field name="type"/>
+                                <field name="main_id" widget="selection"/>
+                                <field name="date_create"/>
+                            </group>
+                            <group string="Hébergement">
+                                <field name="hebergeur_id" widget="selection"/>
+                                <field name="price_purchase"/>
+                                <field name="date_purchase"/>
+                                <field name="recurrence_purchase"/>
+                            </group>
+                            <group string="Client">
+                                <field name="client_ids" widget="many2many_tags" placeholder="Ajouter des clients..."/>
+                                <field name="price_sale"/>
+                                <field name="date_sale"/>
+                                <field name="recurrence_sale"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description" name="content_page">
+                                <field name="content" placeholder="Écrivez votre description ici..."/>
+                            </page>
+                            <page string="Notes Internes" name="notes_page">
+                                <field name="notes" widget="html" options="{'safe': True}"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+      <!-- ACTION DOMAIN -->
+        <record id='solidserv_domain_action' model='ir.actions.act_window'>
+            <field name="name">Gestion des Domaines</field>
+            <field name="res_model">solidserv.domain</field>
+            <field name="view_mode">list,form</field>
+            <field name="path">solidserv-domain</field>
+        </record>
+
 
 
       <!-- VUE SERVER-->
@@ -118,6 +194,8 @@
 
                 <field name="content"/>
 
+                <field name="domain_ids" widget="many2many_tags"/>
+
                 <field name="status_color" column_invisible="1"/>
                 <field name="status_id" widget="badge" options="{'color_field': 'status_color'}"/>
                 <field name="ip_private"/>
@@ -130,6 +208,14 @@
                 <field name="baremetal_id" widget="badge"/>
 
                 <field name="client_ids" widget="many2many_tags"/>
+
+                <field name="monitoring" column_invisible="1"/>
+                <button
+                    name="action_open_monitoring"
+                    type="object"
+                    icon="fa-bar-chart"
+                    title="Voir le monitoring"
+                    invisible="not monitoring"/>
 
             </list>
         </field>
@@ -154,6 +240,8 @@
                                 <field name="ip_public"/>
                                 <field name="ip_private"/>
                                 <field name="proxy_id" widget="selection"/>
+                                <field name="domain_ids" widget="many2many_tags" placeholder="Ajouter des domaines..."/>
+                                <field name="monitoring"/>
                             </group>
                             <group string="Technique">
                                 <field name="os_id" widget="selection"/>
@@ -209,6 +297,11 @@
     <menuitem name="Serveur" id="solidserv_server_menu"
         parent="solidserv_base_menu"
         action="solidserv_server_action"
+        groups="solidserv.group_solidserv_admin"/>
+
+      <menuitem name="Nom de domaine" id="solidserv_domain_menu"
+        parent="solidserv_base_menu"
+        action="solidserv_domain_action"
         groups="solidserv.group_solidserv_admin"/>
 
       <!-- NAV BAR > CONFIG -->

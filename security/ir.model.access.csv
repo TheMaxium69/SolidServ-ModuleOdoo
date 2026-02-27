@@ -11,3 +11,5 @@ access_solidserv_server_status_admin,solidserv.server.status,model_solidserv_ser
 access_solidserv_server_status_user,solidserv.server.status,model_solidserv_server_status,base.group_user,0,0,0,0
 access_solidserv_server_recurrence_admin,solidserv.server.recurrence,model_solidserv_server_recurrence,solidserv.group_solidserv_admin,1,1,1,1
 access_solidserv_server_recurrence_user,solidserv.server.recurrence,model_solidserv_server_recurrence,base.group_user,0,0,0,0
+access_solidserv_domain_admin,solidserv.domain,model_solidserv_domain,solidserv.group_solidserv_admin,1,1,1,1
+access_solidserv_domain_user,solidserv.domain,model_solidserv_domain,base.group_user,0,0,0,0

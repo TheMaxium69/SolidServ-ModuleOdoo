@@ -60,6 +60,16 @@ class Server(models.Model):
     ip_public = fields.Char('IP Publique')
     ip_private = fields.Char('IP Privé')
     proxy_id = fields.Many2one('solidserv.server', string='Proxy')
+    domain_ids = fields.Many2many('solidserv.domain', string='Nom de domaine')
+    monitoring = fields.Char('Monitoring')
+
+    def action_open_monitoring(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_url',
+            'url': self.monitoring,
+            'target': 'new',
+        }
 
     # Technique
     os_id = fields.Many2one('solidserv.server.os', string='OS')
