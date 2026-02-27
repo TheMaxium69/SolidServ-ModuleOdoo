@@ -21,6 +21,7 @@ SolidServ est un module Odoo propriétaire conçu spécifiquement pour la gestio
 
     # always loaded
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/views.xml',
     ],

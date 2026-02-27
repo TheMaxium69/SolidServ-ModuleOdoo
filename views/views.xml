@@ -25,8 +25,14 @@
 
 
 
-    <menuitem name="SolidServ" id="solidserv_base_menu" web_icon="solidserv,static/description/icon.png"/>
-    <menuitem name="Serveur" id="solidserv_vehicule_menu" parent="solidserv_base_menu" action="solidserv_server_action"/>
+    <menuitem name="SolidServ" id="solidserv_base_menu"
+    web_icon="solidserv,static/description/icon.png"
+    groups="solidserv.group_solidserv_admin"/>
+
+    <menuitem name="Serveur" id="solidserv_vehicule_menu"
+        parent="solidserv_base_menu"
+        action="solidserv_server_action"
+        groups="solidserv.group_solidserv_admin"/>
 
   </data>
 </odoo>
