@@ -1,6 +1,26 @@
 <odoo>
   <data>
 
+      <!-- STATUT TYPE-->
+      <record id="view_solidserv_server_status_list" model="ir.ui.view">
+            <field name="name">solidserv.server.status.list</field>
+            <field name="model">solidserv.server.status</field>
+            <field name="arch" type="xml">
+                <list editable="bottom">
+                    <field name="name"/>
+                    <field name="color" widget="color_picker"/>
+                </list>
+            </field>
+        </record>
+
+      <!--STATUT TYPE-->
+        <record id="action_solidserv_server_status" model="ir.actions.act_window">
+            <field name="name">Configuration des statuts de serveurs</field>
+            <field name="res_model">solidserv.server.status</field>
+            <field name="view_mode">list</field>
+            <field name="path">solidserv-status</field>
+        </record>
+
       <!-- VUE OS-->
       <record id="view_solidserv_server_os_list" model="ir.ui.view">
             <field name="name">solidserv.server.os.list</field>
@@ -43,6 +63,26 @@
         </record>
 
 
+      <!-- VUE RECURENCE-->
+      <record id="view_solidserv_server_recurrence_list" model="ir.ui.view">
+            <field name="name">solidserv.server.recurrence.list</field>
+            <field name="model">solidserv.server.recurrence</field>
+            <field name="arch" type="xml">
+                <list editable="bottom">
+                    <field name="name"/>
+                </list>
+            </field>
+        </record>
+
+      <!--ACTION RECURENCE-->
+        <record id="action_solidserv_server_recurrence" model="ir.actions.act_window">
+            <field name="name">Configuration des récurrences d'abonnement de Serveur</field>
+            <field name="res_model">solidserv.server.recurrence</field>
+            <field name="view_mode">list</field>
+            <field name="path">solidserv-recurrences</field>
+        </record>
+
+
       <!-- VUE TYPE-->
       <record id="view_solidserv_server_type_list" model="ir.ui.view">
             <field name="name">solidserv.server.type.list</field>
@@ -74,12 +114,23 @@
                 <field name="type_color" column_invisible="1"/>
                 <field name="type_id" widget="badge" options="{'color_field': 'type_color'}"/>
                 <field name="name"/>
+                <field name="alias"/>
+
+                <field name="content"/>
+
+                <field name="status_color" column_invisible="1"/>
+                <field name="status_id" widget="badge" options="{'color_field': 'status_color'}"/>
+                <field name="ip_private"/>
                 <field name="ip_public"/>
+                <field name="proxy_id" widget="badge"/>
+
+                <field name="hebergeur_id" widget="badge"/>
                 <field name="location_country" column_invisible="1"/>
                 <field name="location_id" widget="badge"/>
-                <field name="os_version" column_invisible="1"/>
-                <field name="os_type" column_invisible="1"/>
-                <field name="os_id" widget="badge"/>
+                <field name="baremetal_id" widget="badge"/>
+
+                <field name="client_ids" widget="many2many_tags"/>
+
             </list>
         </field>
     </record>
@@ -96,17 +147,35 @@
                                 <field name="name"/>
                                 <field name="alias"/>
                                 <field name="type_id" widget="selection"/>
+                                <field name="date_create"/>
                             </group>
                             <group string="Serveur">
+                                <field name="status_id" widget="selection"/>
                                 <field name="ip_public"/>
                                 <field name="ip_private"/>
-                                <field name="location_id" widget="selection"/>
+                                <field name="proxy_id" widget="selection"/>
                             </group>
                             <group string="Technique">
                                 <field name="os_id" widget="selection"/>
                                 <field name="cpu"/>
                                 <field name="ram"/>
                                 <field name="rom"/>
+                                <field name="tyro_uptime_state"/>
+                                <field name="id_vm"/>
+                            </group>
+                            <group string="Hébergement">
+                                <field name="hebergeur_id" widget="selection"/>
+                                <field name="baremetal_id" widget="selection"/>
+                                <field name="location_id" widget="selection"/>
+                                <field name="price_purchase"/>
+                                <field name="date_purchase"/>
+                                <field name="recurrence_purchase"/>
+                            </group>
+                            <group string="Client">
+                                <field name="client_ids" widget="many2many_tags" placeholder="Ajouter des clients..."/>
+                                <field name="price_sale"/>
+                                <field name="date_sale"/>
+                                <field name="recurrence_sale"/>
                             </group>
                         </group>
                         <notebook>
@@ -147,6 +216,8 @@
         <menuitem name="Types des serveurs" id="solidserv_type_menu" parent="solidserv_config_menu" action="action_solidserv_server_type" groups="solidserv.group_solidserv_admin"/>
         <menuitem name="Lieux des serveurs" id="solidserv_location_menu" parent="solidserv_config_menu" action="action_solidserv_server_location" groups="solidserv.group_solidserv_admin"/>
         <menuitem name="OS des serveurs" id="solidserv_os_menu" parent="solidserv_config_menu" action="action_solidserv_server_os" groups="solidserv.group_solidserv_admin"/>
+        <menuitem name="Statuts des serveurs" id="solidserv_status_menu" parent="solidserv_config_menu" action="action_solidserv_server_status" groups="solidserv.group_solidserv_admin"/>
+        <menuitem name="Récurrence des serveurs" id="solidserv_recurrence_menu" parent="solidserv_config_menu" action="action_solidserv_server_recurrence" groups="solidserv.group_solidserv_admin"/>
 
 
   </data>

@@ -7,3 +7,7 @@ access_solidserv_server_type_user,solidserv.server.type,model_solidserv_server_t
 access_solidserv_server_location_user,solidserv.server.location,model_solidserv_server_location,base.group_user,0,0,0,0
 access_solidserv_server_os_admin,solidserv.server.os,model_solidserv_server_os,solidserv.group_solidserv_admin,1,1,1,1
 access_solidserv_server_os_user,solidserv.server.os,model_solidserv_server_os,base.group_user,0,0,0,0
+access_solidserv_server_status_admin,solidserv.server.status,model_solidserv_server_status,solidserv.group_solidserv_admin,1,1,1,1
+access_solidserv_server_status_user,solidserv.server.status,model_solidserv_server_status,base.group_user,0,0,0,0
+access_solidserv_server_recurrence_admin,solidserv.server.recurrence,model_solidserv_server_recurrence,solidserv.group_solidserv_admin,1,1,1,1
+access_solidserv_server_recurrence_user,solidserv.server.recurrence,model_solidserv_server_recurrence,base.group_user,0,0,0,0
