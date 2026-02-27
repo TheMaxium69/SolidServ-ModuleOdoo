@@ -1,3 +1,9 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_solidserv_server_admin,solidserv.server,model_solidserv_server,solidserv.group_solidserv_admin,1,1,1,1
+access_solidserv_server_type_admin,solidserv.server.type,model_solidserv_server_type,solidserv.group_solidserv_admin,1,1,1,1
+access_solidserv_server_location_admin,solidserv.server.location,model_solidserv_server_location,solidserv.group_solidserv_admin,1,1,1,1
 access_solidserv_server_user,solidserv.server,model_solidserv_server,base.group_user,0,0,0,0
+access_solidserv_server_type_user,solidserv.server.type,model_solidserv_server_type,base.group_user,0,0,0,0
+access_solidserv_server_location_user,solidserv.server.location,model_solidserv_server_location,base.group_user,0,0,0,0
+access_solidserv_server_os_admin,solidserv.server.os,model_solidserv_server_os,solidserv.group_solidserv_admin,1,1,1,1
+access_solidserv_server_os_user,solidserv.server.os,model_solidserv_server_os,base.group_user,0,0,0,0
