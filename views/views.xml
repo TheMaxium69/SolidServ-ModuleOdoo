@@ -279,11 +279,23 @@
             </field>
         </record>
 
+      <!-- VUE GRAPHIQUE SERVER PAR LIEU -->
+        <record id="view_solidserv_server_graph" model="ir.ui.view">
+            <field name="name">solidserv.server.graph</field>
+            <field name="model">solidserv.server</field>
+            <field name="arch" type="xml">
+                <graph string="Serveurs par lieu" type="bar">
+                    <field name="location_id" type="row"/>
+                    <field name="id" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
       <!-- ACTION SERVER -->
         <record id='solidserv_server_action' model='ir.actions.act_window'>
             <field name="name">Gestion des Serveurs</field>
             <field name="res_model">solidserv.server</field>
-            <field name="view_mode">list,form</field>
+            <field name="view_mode">list,form,graph</field>
             <field name="path">solidserv</field>
         </record>
 
