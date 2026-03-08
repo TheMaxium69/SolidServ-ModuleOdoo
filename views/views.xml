@@ -1,6 +1,25 @@
 <odoo>
   <data>
 
+      <!-- VUE MOTEUR DATABASE -->
+      <record id="view_solidserv_database_moteur_list" model="ir.ui.view">
+          <field name="name">solidserv.database.moteur.list</field>
+          <field name="model">solidserv.database.moteur</field>
+          <field name="arch" type="xml">
+              <list editable="bottom">
+                  <field name="name"/>
+              </list>
+          </field>
+      </record>
+
+      <!-- ACTION MOTEUR DATABASE -->
+      <record id="action_solidserv_database_moteur" model="ir.actions.act_window">
+          <field name="name">Configuration des moteurs de base de données</field>
+          <field name="res_model">solidserv.database.moteur</field>
+          <field name="view_mode">list</field>
+          <field name="path">solidserv-moteurs</field>
+      </record>
+
       <!-- STATUT TYPE-->
       <record id="view_solidserv_server_status_list" model="ir.ui.view">
             <field name="name">solidserv.server.status.list</field>
@@ -226,14 +245,181 @@
             </field>
         </record>
 
+      <!-- VUE GRAPHIQUE DOMAIN PAR DOMAINE PRINCIPAL -->
+      <record id="view_solidserv_domain_graph" model="ir.ui.view">
+          <field name="name">solidserv.domain.graph</field>
+          <field name="model">solidserv.domain</field>
+          <field name="arch" type="xml">
+              <graph string="Sous-domaines par domaine principal" type="bar">
+                  <field name="main_id" type="row"/>
+                  <field name="id" type="measure"/>
+              </graph>
+          </field>
+      </record>
+
       <!-- ACTION DOMAIN -->
         <record id='solidserv_domain_action' model='ir.actions.act_window'>
             <field name="name">Gestion des Domaines</field>
             <field name="res_model">solidserv.domain</field>
-            <field name="view_mode">kanban,list,form</field>
+            <field name="view_mode">kanban,list,form,graph</field>
             <field name="path">solidserv-domain</field>
         </record>
 
+
+      <!-- VUE LIST DATABASE -->
+      <record id="view_solidserv_database_list" model="ir.ui.view">
+          <field name="name">solidserv.database.list</field>
+          <field name="model">solidserv.database</field>
+          <field name="arch" type="xml">
+              <list>
+                  <field name="name"/>
+                  <field name="server_id" widget="badge"/>
+                  <field name="database"/>
+                  <field name="table"/>
+                  <field name="client_ids" widget="many2many_tags"/>
+              </list>
+          </field>
+      </record>
+
+      <!-- VUE FORM DATABASE -->
+      <record id="view_solidserv_database_form" model="ir.ui.view">
+          <field name="name">solidserv.database.form</field>
+          <field name="model">solidserv.database</field>
+          <field name="arch" type="xml">
+              <form>
+                  <sheet>
+                      <group>
+                          <group string="Identité">
+                              <field name="name"/>
+                              <field name="client_ids" widget="many2many_tags" placeholder="Ajouter des clients..."/>
+                          </group>
+                          <group string="Serveur">
+                              <field name="status_id" widget="selection"/>
+                              <field name="server_id" widget="selection"/>
+                          </group>
+                          <group string="Base de données">
+                              <field name="moteur_id" widget="selection"/>
+                              <field name="database"/>
+                              <field name="table"/>
+                          </group>
+                      </group>
+                      <notebook>
+                          <page string="Description" name="content_page">
+                              <field name="content" placeholder="Écrivez votre description ici..."/>
+                          </page>
+                          <page string="Notes Internes" name="notes_page">
+                              <field name="notes" widget="html" options="{'safe': True}"/>
+                          </page>
+                      </notebook>
+                  </sheet>
+              </form>
+          </field>
+      </record>
+
+      <!-- VUE KANBAN DATABASE -->
+      <record id="view_solidserv_database_kanban" model="ir.ui.view">
+          <field name="name">solidserv.database.kanban</field>
+          <field name="model">solidserv.database</field>
+          <field name="arch" type="xml">
+              <kanban default_group_by="server_id">
+                  <field name="id"/>
+                  <field name="name"/>
+                  <field name="server_id"/>
+                  <field name="status_id"/>
+                  <field name="status_color"/>
+                  <field name="database"/>
+                  <field name="table"/>
+                  <field name="client_ids"/>
+                  <field name="hebergeur_id"/>
+                  <field name="location_id"/>
+                  <field name="os_id"/>
+                  <templates>
+                      <t t-name="card" class="mb-3">
+                          <!-- HEADER : Nom + Statut -->
+                          <div class="d-flex justify-content-between align-items-start mb-2">
+                              <strong style="font-size: 15px;"><field name="name"/></strong>
+                              <field name="status_id" widget="badge" options="{'color_field': 'status_color'}"/>
+                          </div>
+
+                          <hr style="margin: 6px 0;"/>
+
+                          <!-- DB + TABLE -->
+                          <div class="d-flex flex-wrap gap-1 mt-1">
+                              <t t-if="record.moteur_id.value">
+                                  <span class="badge text-bg-light">
+                                      <i class="fa fa-cogs me-1"/>
+                                      <field name="moteur_id"/>
+                                  </span>
+                              </t>
+                              <t t-if="record.database.value">
+                                  <span class="badge text-bg-light">
+                                      <i class="fa fa-database me-1"/>
+                                      <field name="database"/>
+                                  </span>
+                              </t>
+                              <t t-if="record.table.value">
+                                  <span class="badge text-bg-light">
+                                      <i class="fa fa-table me-1"/>
+                                      <field name="table"/>
+                                  </span>
+                              </t>
+                          </div>
+
+                          <hr style="margin: 6px 0;"/>
+
+                          <!-- LIEU + HÉBERGEUR + OS -->
+                          <div class="d-flex flex-wrap gap-1 mt-1">
+                              <t t-if="record.location_id.value">
+                                  <span class="badge text-bg-light">
+                                      <i class="fa fa-map-marker me-1"/>
+                                      <field name="location_id"/>
+                                  </span>
+                              </t>
+                              <t t-if="record.hebergeur_id.value">
+                                  <span class="badge text-bg-light">
+                                      <i class="fa fa-server me-1"/>
+                                      <field name="hebergeur_id"/>
+                                  </span>
+                              </t>
+                              <t t-if="record.os_id.value">
+                                  <span class="badge text-bg-light">
+                                      <i class="fa fa-desktop me-1"/>
+                                      <field name="os_id"/>
+                                  </span>
+                              </t>
+                          </div>
+
+                          <!-- CLIENTS -->
+                          <t t-if="record.client_ids.value">
+                              <div class="mt-2 pt-1" style="border-top: 1px solid #eee;">
+                                  <field name="client_ids" widget="many2many_tags"/>
+                              </div>
+                          </t>
+                      </t>
+                  </templates>
+              </kanban>
+          </field>
+      </record>
+
+      <!-- VUE GRAPHIQUE DATABASE PAR LIEU -->
+      <record id="view_solidserv_database_graph" model="ir.ui.view">
+          <field name="name">solidserv.database.graph</field>
+          <field name="model">solidserv.database</field>
+          <field name="arch" type="xml">
+              <graph string="Bases de données par lieu" type="bar">
+                  <field name="location_id" type="row"/>
+                  <field name="id" type="measure"/>
+              </graph>
+          </field>
+      </record>
+
+      <!-- ACTION DATABASE -->
+      <record id='solidserv_database_action' model='ir.actions.act_window'>
+          <field name="name">Gestion des Bases de données</field>
+          <field name="res_model">solidserv.database</field>
+          <field name="view_mode">kanban,list,form,graph</field>
+          <field name="path">solidserv-database</field>
+      </record>
 
 
       <!-- VUE SERVER-->
@@ -359,16 +545,21 @@
                   <field name="type_color"/>
                   <field name="status_id"/>
                   <field name="status_color"/>
-                  <field name="status_id"/>
                   <field name="ip_public"/>
                   <field name="ip_private"/>
+                  <field name="proxy_id"/>
+                  <field name="baremetal_id"/>
                   <field name="location_id"/>
                   <field name="hebergeur_id"/>
                   <field name="client_ids"/>
                   <field name="os_id"/>
+                  <field name="monitoring"/>
+                  <field name="cpu"/>
+                  <field name="ram"/>
+                  <field name="rom"/>
                   <templates>
                       <t t-name="card" class="mb-3">
-                          <!-- HEADER : Nom + Statut -->
+                          <!-- HEADER : Nom + Statut + Monitoring -->
                           <div class="d-flex justify-content-between align-items-start mb-2">
                               <div>
                                   <strong style="font-size: 15px;"><field name="name"/></strong>
@@ -378,16 +569,31 @@
                                       </div>
                                   </t>
                               </div>
-                              <!-- INDICATEUR EN LIGNE / HORS LIGNE -->
-                              <div class="d-flex align-items-center gap-1">
+                              <div class="d-flex align-items-center gap-2">
+                                  <t t-if="record.monitoring.value">
+                                      <button name="action_open_monitoring" type="object"
+                                              class="btn btn-sm btn-light"
+                                              title="Voir le monitoring">
+                                          <i class="fa fa-bar-chart"/>
+                                      </button>
+                                  </t>
                                   <field name="status_id" widget="badge" options="{'color_field': 'status_color'}"/>
                               </div>
                           </div>
 
                           <hr style="margin: 6px 0;"/>
 
+
+
                           <!-- RÉSEAU -->
                           <div class="mb-1">
+                              <!-- BARE METAL (discret, au dessus des IP) -->
+                              <t t-if="record.baremetal_id.value">
+                                  <div class="text-muted mb-1" style="font-size:11px;">
+                                      <i class="fa fa-cube me-1"/>
+                                      <field name="baremetal_id"/>
+                                  </div>
+                              </t>
                               <t t-if="record.ip_public.value">
                                   <div class="d-flex align-items-center gap-1">
                                       <i class="fa fa-globe text-muted" style="width:14px;"/>
@@ -402,7 +608,16 @@
                                       <strong style="font-size:12px; margin-left:4px;"><field name="ip_private"/></strong>
                                   </div>
                               </t>
+                              <!-- PROXY (discret, en dessous des IP) -->
+                              <t t-if="record.proxy_id.value">
+                                  <div class="text-muted mt-1" style="font-size:11px;">
+                                      <i class="fa fa-share-alt me-1"/>
+                                      <field name="proxy_id"/>
+                                  </div>
+                              </t>
                           </div>
+
+
 
                           <!-- LOCALISATION + HÉBERGEUR + OS -->
                           <div class="d-flex flex-wrap gap-1 mt-2">
@@ -425,6 +640,31 @@
                                   </span>
                               </t>
                           </div>
+
+                          <!-- CPU + RAM + STOCKAGE -->
+                          <t t-if="record.cpu.value or record.ram.value or record.rom.value">
+                              <hr style="margin: 6px 0;"/>
+                              <div class="d-flex flex-wrap gap-1">
+                                  <t t-if="record.cpu.value">
+                                      <span class="badge text-bg-light">
+                                          <i class="fa fa-microchip me-1"/>
+                                          <field name="cpu"/>
+                                      </span>
+                                  </t>
+                                  <t t-if="record.ram.value">
+                                      <span class="badge text-bg-light">
+                                          <i class="fa fa-random me-1"/>
+                                          <field name="ram"/>
+                                      </span>
+                                  </t>
+                                  <t t-if="record.rom.value">
+                                      <span class="badge text-bg-light">
+                                          <i class="fa fa-hdd-o me-1"/>
+                                          <field name="rom"/>
+                                      </span>
+                                  </t>
+                              </div>
+                          </t>
 
                           <!-- CLIENTS -->
                           <t t-if="record.client_ids.value">
@@ -463,6 +703,11 @@
         action="solidserv_domain_action"
         groups="solidserv.group_solidserv_admin"/>
 
+      <menuitem name="Base de données" id="solidserv_database_menu"
+                parent="solidserv_base_menu"
+                action="solidserv_database_action"
+                groups="solidserv.group_solidserv_admin"/>
+
       <!-- NAV BAR > CONFIG -->
       <menuitem name="Configuration" id="solidserv_config_menu" parent="solidserv_base_menu" sequence="100" groups="solidserv.group_solidserv_admin"/>
         <menuitem name="Types des serveurs" id="solidserv_type_menu" parent="solidserv_config_menu" action="action_solidserv_server_type" groups="solidserv.group_solidserv_admin"/>
@@ -470,7 +715,10 @@
         <menuitem name="OS des serveurs" id="solidserv_os_menu" parent="solidserv_config_menu" action="action_solidserv_server_os" groups="solidserv.group_solidserv_admin"/>
         <menuitem name="Statuts des serveurs" id="solidserv_status_menu" parent="solidserv_config_menu" action="action_solidserv_server_status" groups="solidserv.group_solidserv_admin"/>
         <menuitem name="Récurrence des serveurs" id="solidserv_recurrence_menu" parent="solidserv_config_menu" action="action_solidserv_server_recurrence" groups="solidserv.group_solidserv_admin"/>
-
+      <menuitem name="Moteurs de base de données" id="solidserv_database_moteur_menu"
+                parent="solidserv_config_menu"
+                action="action_solidserv_database_moteur"
+                groups="solidserv.group_solidserv_admin"/>
 
   </data>
 </odoo>

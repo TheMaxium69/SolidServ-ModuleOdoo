@@ -13,3 +13,7 @@ access_solidserv_server_recurrence_admin,solidserv.server.recurrence,model_solid
 access_solidserv_server_recurrence_user,solidserv.server.recurrence,model_solidserv_server_recurrence,base.group_user,0,0,0,0
 access_solidserv_domain_admin,solidserv.domain,model_solidserv_domain,solidserv.group_solidserv_admin,1,1,1,1
 access_solidserv_domain_user,solidserv.domain,model_solidserv_domain,base.group_user,0,0,0,0
+access_solidserv_database_admin,solidserv.database,model_solidserv_database,solidserv.group_solidserv_admin,1,1,1,1
+access_solidserv_database_user,solidserv.database,model_solidserv_database,base.group_user,0,0,0,0
+access_solidserv_database_moteur_admin,solidserv.database.moteur,model_solidserv_database_moteur,solidserv.group_solidserv_admin,1,1,1,1
+access_solidserv_database_moteur_user,solidserv.database.moteur,model_solidserv_database_moteur,base.group_user,0,0,0,0
