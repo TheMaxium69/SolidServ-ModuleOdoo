@@ -131,6 +131,59 @@
         </field>
     </record>
 
+      <!-- VUE KANBAN DOMAIN -->
+      <record id="view_solidserv_domain_kanban" model="ir.ui.view">
+          <field name="name">solidserv.domain.kanban</field>
+          <field name="model">solidserv.domain</field>
+          <field name="arch" type="xml">
+              <kanban>
+                  <field name="id"/>
+                  <field name="name"/>
+                  <field name="type"/>
+                  <field name="main_id"/>
+                  <field name="hebergeur_id"/>
+                  <field name="client_ids"/>
+                  <field name="content"/>
+                  <templates>
+                      <t t-name="card" class="mb-3">
+                          <div class="d-flex justify-content-between align-items-start mb-2">
+                              <div>
+                                  <strong style="font-size: 15px;"><field name="name"/></strong>
+                                  <t t-if="record.type.value">
+                                      <div class="text-muted" style="font-size: 12px;">
+                                          <field name="type"/>
+                                      </div>
+                                  </t>
+                              </div>
+                              <button name="action_open_domain" type="object"
+                                      class="btn btn-sm btn-light"
+                                      title="Voir le site">
+                                  <i class="fa fa-globe"/>
+                              </button>
+                          </div>
+
+                          <hr style="margin: 6px 0;"/>
+
+                          <div class="d-flex flex-wrap gap-1 mt-1">
+                              <t t-if="record.hebergeur_id.value">
+                                  <span class="badge text-bg-light">
+                                      <i class="fa fa-server me-1"/>
+                                      <field name="hebergeur_id"/>
+                                  </span>
+                              </t>
+                          </div>
+
+                          <t t-if="record.client_ids.value">
+                              <div class="mt-2 pt-1" style="border-top: 1px solid #eee;">
+                                  <field name="client_ids" widget="many2many_tags"/>
+                              </div>
+                          </t>
+                      </t>
+                  </templates>
+              </kanban>
+          </field>
+      </record>
+
       <!-- FORM DOMAIN -->
     <record id="view_solidserv_domain_form" model="ir.ui.view">
             <field name="name">solidserv.domain.form</field>
@@ -175,7 +228,7 @@
         <record id='solidserv_domain_action' model='ir.actions.act_window'>
             <field name="name">Gestion des Domaines</field>
             <field name="res_model">solidserv.domain</field>
-            <field name="view_mode">list,form</field>
+            <field name="view_mode">kanban,list,form</field>
             <field name="path">solidserv-domain</field>
         </record>
 
@@ -280,22 +333,114 @@
         </record>
 
       <!-- VUE GRAPHIQUE SERVER PAR LIEU -->
-        <record id="view_solidserv_server_graph" model="ir.ui.view">
-            <field name="name">solidserv.server.graph</field>
-            <field name="model">solidserv.server</field>
-            <field name="arch" type="xml">
-                <graph string="Serveurs par lieu" type="bar">
-                    <field name="location_id" type="row"/>
-                    <field name="id" type="measure"/>
-                </graph>
-            </field>
-        </record>
+      <record id="view_solidserv_server_graph" model="ir.ui.view">
+          <field name="name">solidserv.server.graph</field>
+          <field name="model">solidserv.server</field>
+          <field name="arch" type="xml">
+              <graph string="Serveurs par lieu" type="bar">
+                  <field name="location_id" type="row"/>
+                  <field name="id" type="measure"/>
+              </graph>
+          </field>
+      </record>
+
+      <!-- VUE KANBAN SERVER -->
+      <record id="view_solidserv_server_kanban" model="ir.ui.view">
+          <field name="name">solidserv.server.kanban</field>
+          <field name="model">solidserv.server</field>
+          <field name="arch" type="xml">
+              <kanban default_group_by="type_id">
+                  <field name="id"/>
+                  <field name="name"/>
+                  <field name="alias"/>
+                  <field name="type_id"/>
+                  <field name="type_color"/>
+                  <field name="status_id"/>
+                  <field name="status_color"/>
+                  <field name="status_id"/>
+                  <field name="ip_public"/>
+                  <field name="ip_private"/>
+                  <field name="location_id"/>
+                  <field name="hebergeur_id"/>
+                  <field name="client_ids"/>
+                  <field name="os_id"/>
+                  <templates>
+                      <t t-name="card" class="mb-3">
+                          <!-- HEADER : Nom + Statut -->
+                          <div class="d-flex justify-content-between align-items-start mb-2">
+                              <div>
+                                  <strong style="font-size: 15px;"><field name="name"/></strong>
+                                  <t t-if="record.alias.value">
+                                      <div class="text-muted" style="font-size: 12px;">
+                                          <field name="alias"/>
+                                      </div>
+                                  </t>
+                              </div>
+                              <!-- INDICATEUR EN LIGNE / HORS LIGNE -->
+                              <div class="d-flex align-items-center gap-1">
+                                  <field name="status_id" widget="badge" options="{'color_field': 'status_color'}"/>
+                              </div>
+                          </div>
+
+                          <hr style="margin: 6px 0;"/>
+
+                          <!-- RÉSEAU -->
+                          <div class="mb-1">
+                              <t t-if="record.ip_public.value">
+                                  <div class="d-flex align-items-center gap-1">
+                                      <i class="fa fa-globe text-muted" style="width:14px;"/>
+                                      <span class="text-muted" style="font-size:11px;">Public</span>
+                                      <strong style="font-size:12px; margin-left:4px;"><field name="ip_public"/></strong>
+                                  </div>
+                              </t>
+                              <t t-if="record.ip_private.value">
+                                  <div class="d-flex align-items-center gap-1">
+                                      <i class="fa fa-lock text-muted" style="width:14px;"/>
+                                      <span class="text-muted" style="font-size:11px;">Privé</span>
+                                      <strong style="font-size:12px; margin-left:4px;"><field name="ip_private"/></strong>
+                                  </div>
+                              </t>
+                          </div>
+
+                          <!-- LOCALISATION + HÉBERGEUR + OS -->
+                          <div class="d-flex flex-wrap gap-1 mt-2">
+                              <t t-if="record.location_id.value">
+                                  <span class="badge text-bg-light">
+                                      <i class="fa fa-map-marker me-1"/>
+                                      <field name="location_id"/>
+                                  </span>
+                              </t>
+                              <t t-if="record.hebergeur_id.value">
+                                  <span class="badge text-bg-light">
+                                      <i class="fa fa-server me-1"/>
+                                      <field name="hebergeur_id"/>
+                                  </span>
+                              </t>
+                              <t t-if="record.os_id.value">
+                                  <span class="badge text-bg-light">
+                                      <i class="fa fa-desktop me-1"/>
+                                      <field name="os_id"/>
+                                  </span>
+                              </t>
+                          </div>
+
+                          <!-- CLIENTS -->
+                          <t t-if="record.client_ids.value">
+                              <div class="mt-2 pt-1" style="border-top: 1px solid #eee;">
+                                  <field name="client_ids" widget="many2many_tags"/>
+                              </div>
+                          </t>
+                      </t>
+                  </templates>
+              </kanban>
+          </field>
+      </record>
 
       <!-- ACTION SERVER -->
         <record id='solidserv_server_action' model='ir.actions.act_window'>
             <field name="name">Gestion des Serveurs</field>
             <field name="res_model">solidserv.server</field>
-            <field name="view_mode">list,form,graph</field>
+            <field name="view_mode">kanban,list,form,graph</field>
             <field name="path">solidserv</field>
         </record>
 
