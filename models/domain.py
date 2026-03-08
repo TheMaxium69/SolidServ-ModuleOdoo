@@ -3,6 +3,7 @@ from odoo import models, fields
 class Domain(models.Model):
     _name = 'solidserv.domain'
     _description = 'Nom de domaine'
+    _order = 'type asc, name asc'
 
     # Global
     currency_id = fields.Many2one(
@@ -13,7 +14,10 @@ class Domain(models.Model):
 
     # Identite
     name = fields.Char('Nom du domaine', required=True)
-    type = fields.Char('Type de domaine')
+    type = fields.Selection([
+        ('main', 'Main'),
+        ('sub', 'Sous-domaine'),
+    ], string='Type de domaine', default='main')
     date_create = fields.Date('Mise en service')
     main_id = fields.Many2one('solidserv.domain', string='Domaine Principal')
 

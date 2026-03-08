@@ -136,7 +136,7 @@
           <field name="name">solidserv.domain.kanban</field>
           <field name="model">solidserv.domain</field>
           <field name="arch" type="xml">
-              <kanban>
+              <kanban default_group_by="type">
                   <field name="id"/>
                   <field name="name"/>
                   <field name="type"/>
@@ -162,21 +162,23 @@
                               </button>
                           </div>
 
-                          <hr style="margin: 6px 0;"/>
+                          <t t-if="record.type.raw_value != 'sub'">
+                              <hr style="margin: 6px 0;"/>
 
-                          <div class="d-flex flex-wrap gap-1 mt-1">
-                              <t t-if="record.hebergeur_id.value">
-                                  <span class="badge text-bg-light">
-                                      <i class="fa fa-server me-1"/>
-                                      <field name="hebergeur_id"/>
-                                  </span>
-                              </t>
-                          </div>
-
-                          <t t-if="record.client_ids.value">
-                              <div class="mt-2 pt-1" style="border-top: 1px solid #eee;">
-                                  <field name="client_ids" widget="many2many_tags"/>
+                              <div class="d-flex flex-wrap gap-1 mt-1">
+                                  <t t-if="record.hebergeur_id.value">
+                                      <span class="badge text-bg-light">
+                                          <i class="fa fa-server me-1"/>
+                                          <field name="hebergeur_id"/>
+                                      </span>
+                                  </t>
                               </div>
+
+                              <t t-if="record.client_ids.value">
+                                  <div class="mt-2 pt-1" style="border-top: 1px solid #eee;">
+                                      <field name="client_ids" widget="many2many_tags"/>
+                                  </div>
+                              </t>
                           </t>
                       </t>
                   </templates>
